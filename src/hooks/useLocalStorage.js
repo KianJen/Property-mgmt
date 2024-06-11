@@ -13,7 +13,7 @@ export default function useLocalStorage(key, defaultValue) {
     })
     useEffect(() => { //on change
         localStorage.setItem(key, JSON.stringify(value)) //update with json version
-    }, [])
+    }, [key,value])
 
     return [value, setValue]
 }

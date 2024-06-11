@@ -11,15 +11,109 @@ export function useBudgets(){
  return useContext(BudgetsContext)
 }
 
+/*
+{
+ id:
+ name:
+ max:
+ dict{}
+}
+
+{
+ id:
+ budgetId:
+ amount:
+ description
+ expensetype
+}
+*/
+
 export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useLocalStorage("budgets", [])
     const [expenses, setExpenses] = useLocalStorage("expenses", [])
+    const [types, setTypes] = useLocalStorage("types", [
+        "Advertising",
+        "Auto & Travel",
+        "Cleaning/Maintenance",
+        "Commissions",
+        "Insurance",
+        "Legal/Professional Fees",
+        "Management",
+        "Mortgage Interest To Banks",
+        "Other Interest",
+        "Repairs",
+        "Supplies",
+        "Taxes",
+        "Utilities",
+        "Other"])
+       
+    //const [se,setSe] = useLocalStorage("Schedule_E",[])
+    //const [dict, setDict] = useLocalStorage("dict", {})
+    /*
+    let dict = {
+        
+        "Advertising": 0,
+        "Auto & Travel": 0,
+        "Cleaning/Maintenance": 0,
+        "Commissions": 0,
+        "Insurance": 0,
+        "Legal/Professional Fees": 0,
+        "Management": 0,
+        "Mortgage Interest To Banks": 0,
+        "Other Interest": 0,
+        "Repairs": 0,
+        "Supplies": 0,
+        "Taxes": 0,
+        "Utilities": 0,
+        "Other" : 0
+        
+    }
+    */
+    
+    function getBudgetExpenseTypes(budgetId,typ){
+        let exp = expenses.filter(expense => expense.budgetId === budgetId) //only budget expenses
+        return exp.filter(expense => expense.expenseType === typ) //certain expensetype
+        
+
+    }
+    function getBudgetNegatives(budgetId){
+        let exp = expenses.filter(expense => expense.budgetId === budgetId)
+        return exp.filter(expense => expense.amount < 0)
+    }
     function getBudgetExpenses(budgetId) {
         return expenses.filter(expense => expense.budgetId === budgetId) // => = "where"
     }
-    function addExpense ({ description, amount, budgetId }) {
+    function addTypes() {
+        setTypes([
+        "Advertising",
+        "Auto & Travel",
+        "Cleaning/Maintenance",
+        "Commissions",
+        "Insurance",
+        "Legal/Professional Fees",
+        "Management",
+        "Mortgage Interest To Banks",
+        "Other Interest",
+        "Repairs",
+        "Supplies",
+        "Taxes",
+        "Utilities",
+        "Other"])
+    
+    }
+    function addExpense ({ description, amount, budgetId, expenseType }) {
+        //let budget = budgets.find(b => b.id === budgetId)
         setExpenses(prevExpenses => {
-            return [...prevExpenses, { id: uuidV4(), description, amount, budgetId}] // make rand id
+            //const found = prevExpenses.find(expense => (expense.expenseType === expenseType) && (expense.budgetId === budgetId))
+            //if(found !== undefined) { //no dupilcate expensetypes
+                
+                //found.amount = found.amount + amount
+                //return prevExpenses
+            //}
+            //budget.dict.set(expenseType , amount);
+            //let am = budget.dict.get(expenseType)
+            //budget.dict.set("Advertising",1)
+            return [...prevExpenses, { id: uuidV4(), description, amount, budgetId, expenseType}] // make rand id
         })
     }
     function addBudget ({name, max}) {
@@ -27,7 +121,11 @@ export const BudgetsProvider = ({ children }) => {
         setBudgets(prevBudgets => {
             if(prevBudgets.find(budget => budget.name === name)) { //no dupilcate budgets
                 return prevBudgets
-            }
+            } 
+            //const dict = new Map()
+            
+            
+                
             return [...prevBudgets, { id: uuidV4(), name, max}] // make rand id
         })
     }
@@ -52,6 +150,10 @@ export const BudgetsProvider = ({ children }) => {
             //gather info
             budgets,
             expenses,
+            types,
+            getBudgetNegatives,
+            addTypes,
+            getBudgetExpenseTypes,
             getBudgetExpenses,
             addExpense,
             addBudget,

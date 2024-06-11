@@ -7,13 +7,17 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
     const descriptionRef = useRef()
     const amountRef = useRef()
     const budgetIdRef = useRef()
-    const { addExpense , budgets } = useBudgets()
+    const expenseTypeRef = useRef()
+    const { addExpense , budgets, types, } = useBudgets()
+    
+   
     function handleSubmit(e) {
         e.preventDefault()
         addExpense({
             description: descriptionRef.current.value,
             amount: parseFloat(amountRef.current.value),
             budgetId: budgetIdRef.current.value,
+            expenseType: expenseTypeRef.current.value
         })
         handleClose() //close after submit
     }
@@ -34,7 +38,8 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
                         <Form.Control 
                          ref = {amountRef}
                          type="number" 
-                         required min = {0}  
+                         required 
+                           
                          step={0.01}/> 
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="budgetid"> 
@@ -46,6 +51,19 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
                             {budgets.map(budget => (
                                 <option key={budget.id} value={budget.id}>
                                     {budget.name}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="budgetid"> 
+                        <Form.Label>Classification</Form.Label>
+                        <Form.Select 
+                         defaultValue={"Other"}
+                         ref = {expenseTypeRef}>
+                            <option id={"Other"}>Other</option>
+                            {types.map(type => (
+                                <option key={type} value={type}>
+                                    {type}
                                 </option>
                             ))}
                         </Form.Select>

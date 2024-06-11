@@ -1,8 +1,7 @@
 import { Button, Modal, Stack } from "react-bootstrap"
 import { currencyFormatter } from "../utils"
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "../contexts/BudgetsContext"
-//ui for adding budget
-//mb = margin bottom
+//fix shared stats
 export default function ViewExpensesModal({budgetId, handleClose }) {
     
     const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } = useBudgets()

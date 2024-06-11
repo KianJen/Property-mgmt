@@ -1,4 +1,4 @@
-//import logo from './logo.svg';
+import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Stack } from 'react-bootstrap';
@@ -12,6 +12,7 @@ import { AddBudgetModal } from './components/addBudgetModal';
 import { AddExpenseModal } from './components/AddExpenseModal';
 import { useState } from 'react';
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from './contexts/BudgetsContext';
+import ViewPropertyStatsModal from './components/PropertyStatsModal';
 
 
 
@@ -19,48 +20,64 @@ import { UNCATEGORIZED_BUDGET_ID, useBudgets } from './contexts/BudgetsContext';
 function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
-  const [showViewExpensesModal, setShowViewExpensesModal] = useState(false)
   const [showViewStatsModal, setShowViewStatsModal] = useState(false)
-  const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState(false)
-  const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState(false)
-  const { budgets, getBudgetExpenses } = useBudgets()
+  //const [showPropertyStatsModal , setShowPropertyStatsModal] = useState(false)
+  const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
+  const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
+  const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
+  const { budgets, getBudgetExpenses, getBudgetNegatives } = useBudgets()
+  //addTypes()
 
   function openAddExpenseModal(budgetId) {
     setShowAddExpenseModal(true)
     setAddExpenseModalBudgetId(budgetId)
-  }
 
+  }
+  
   return ( //mb4 is bottom margin my4 top margin, me-auto is left side
     <> 
     <Container className='my-4'> 
       <Stack direction="horizontal" gap="2" className="mb-4"> 
-        <h1 className="me-auto">Budgets</h1>
-        <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
+        <h1 className="me-auto">Properties</h1>
+        <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Property</Button>
         <Button variant="outline-primary" onClick={openAddExpenseModal}>Add Expense</Button>
-        <Button variant="success" onClick={() => setShowViewStatsModal(true)}>Stats</Button>
+        <Button variant="success" onClick={() => {setShowViewStatsModal(true)}}>Stats</Button>
       </Stack> 
       
       <div
         style={{ 
           display: "grid", 
-          //gridTemplateColumns: "repeat(2,auto-fill,minmax(257px ,514px)",
+          
           gridTemplateColumns: "repeat(auto-fill,minmax(200px, 500px))", 
           gap: "1rem",
           alignItems: "flex-start",
         }}
       >
+
         {budgets.map(budget => {
-          //aggregate expenses
-          const amount = getBudgetExpenses(budget.id).reduce((total,expense) => total
+          
+          let amount = getBudgetExpenses(budget.id).reduce((total,expense) => total
           + expense.amount, 0) 
+          let tf = getBudgetNegatives(budget.id)
+          let neg = 0
+          if(tf === undefined){
+
+          } else { neg = getBudgetNegatives(budget.id).reduce((tot,exp) => tot
+          + exp.amount, 0)
+          //amount += neg
+        }
+          budget.max = Math.abs(neg)
           return (
+            
             <BudgetCard
             name = {budget.name}
             key = {budget.id}
             amount = {amount} 
-            max = {budget.max}
+            max = {Math.abs(neg)}
             onAddExpenseClick={() => openAddExpenseModal(budget.id)}
             onViewExpensesClick={() => setViewExpensesModalBudgetId(budget.id)}
+            onViewPropertyStatsClick={() => setPropertyStatsModalBudgetId(budget.id)}
+            //stats
             />
           )
         })}
@@ -79,13 +96,18 @@ function App() {
       handleClose={() => setShowAddExpenseModal(false)} //what does handleclose do?
     />
     <ViewExpensesModal 
-      show = {showViewExpensesModal}
+      //show = {showViewExpensesModal}
       budgetId={viewExpensesModalBudgetId}
       handleClose={() => setViewExpensesModalBudgetId()}
     />
     <ViewStatsModal
       show={showViewStatsModal}
       handleClose={() => setShowViewStatsModal(false)}
+    />
+    <ViewPropertyStatsModal
+      
+      budgetId={propertyStatsModalBudgetId}
+      handleClose={() => setPropertyStatsModalBudgetId()}
     />
     </>
   )
