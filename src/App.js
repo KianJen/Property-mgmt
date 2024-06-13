@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Stack } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container'
 import BudgetCard from './components/BudgetCard';
+import MonthCarousel from './components/MonthSelect';
 import UncategorizedBudgetCard from './components/UncategorizedBudgetCard';
 import TotalBudgetCard from './components/TotalBudgetCard';
 import ViewExpensesModal from './components/ViewExpensesModal';
@@ -11,6 +12,7 @@ import ViewStatsModal from './components/ViewStatsModal';
 import { AddBudgetModal } from './components/addBudgetModal';
 import { AddExpenseModal } from './components/AddExpenseModal';
 import { useState } from 'react';
+import { useRef } from 'react';
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from './contexts/BudgetsContext';
 import ViewPropertyStatsModal from './components/PropertyStatsModal';
 
@@ -39,6 +41,7 @@ function App() {
     <Container className='my-4'> 
       <Stack direction="horizontal" gap="2" className="mb-4"> 
         <h1 className="me-auto">Properties</h1>
+        <MonthCarousel></MonthCarousel>
         <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Property</Button>
         <Button variant="outline-primary" onClick={openAddExpenseModal}>Add Expense</Button>
         <Button variant="success" onClick={() => {setShowViewStatsModal(true)}}>Stats</Button>

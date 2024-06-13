@@ -8,7 +8,8 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
     const amountRef = useRef()
     const budgetIdRef = useRef()
     const expenseTypeRef = useRef()
-    const { addExpense , budgets, types, } = useBudgets()
+    const monthIdRef = useRef()
+    const { addExpense , budgets, types, months } = useBudgets()
     
    
     function handleSubmit(e) {
@@ -17,7 +18,8 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
             description: descriptionRef.current.value,
             amount: parseFloat(amountRef.current.value),
             budgetId: budgetIdRef.current.value,
-            expenseType: expenseTypeRef.current.value
+            expenseType: expenseTypeRef.current.value,
+            monthId: monthIdRef.current.value
         })
         handleClose() //close after submit
     }
@@ -64,6 +66,19 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
                             {types.map(type => (
                                 <option key={type} value={type}>
                                     {type}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="budgetid"> 
+                        <Form.Label>Month</Form.Label>
+                        <Form.Select 
+                         defaultValue={months[0]}
+                         ref = {monthIdRef}>
+                            <option id={"Other"}>Other</option>
+                            {months.map(month => (
+                                <option key={month} value={month}>
+                                    {month}
                                 </option>
                             ))}
                         </Form.Select>

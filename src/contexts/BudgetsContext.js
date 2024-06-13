@@ -46,6 +46,20 @@ export const BudgetsProvider = ({ children }) => {
         "Taxes",
         "Utilities",
         "Other"])
+    const [months,setMonths] = useLocalStorage("months",[
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ])
        
     //const [se,setSe] = useLocalStorage("Schedule_E",[])
     //const [dict, setDict] = useLocalStorage("dict", {})
@@ -83,25 +97,8 @@ export const BudgetsProvider = ({ children }) => {
     function getBudgetExpenses(budgetId) {
         return expenses.filter(expense => expense.budgetId === budgetId) // => = "where"
     }
-    function addTypes() {
-        setTypes([
-        "Advertising",
-        "Auto & Travel",
-        "Cleaning/Maintenance",
-        "Commissions",
-        "Insurance",
-        "Legal/Professional Fees",
-        "Management",
-        "Mortgage Interest To Banks",
-        "Other Interest",
-        "Repairs",
-        "Supplies",
-        "Taxes",
-        "Utilities",
-        "Other"])
-    
-    }
-    function addExpense ({ description, amount, budgetId, expenseType }) {
+
+    function addExpense ({ description, amount, budgetId, expenseType, monthId }) {
         //let budget = budgets.find(b => b.id === budgetId)
         setExpenses(prevExpenses => {
             //const found = prevExpenses.find(expense => (expense.expenseType === expenseType) && (expense.budgetId === budgetId))
@@ -113,7 +110,7 @@ export const BudgetsProvider = ({ children }) => {
             //budget.dict.set(expenseType , amount);
             //let am = budget.dict.get(expenseType)
             //budget.dict.set("Advertising",1)
-            return [...prevExpenses, { id: uuidV4(), description, amount, budgetId, expenseType}] // make rand id
+            return [...prevExpenses, { id: uuidV4(), description, amount, budgetId, expenseType, monthId}] // make rand id
         })
     }
     function addBudget ({name, max}) {
@@ -151,8 +148,8 @@ export const BudgetsProvider = ({ children }) => {
             budgets,
             expenses,
             types,
+            months,
             getBudgetNegatives,
-            addTypes,
             getBudgetExpenseTypes,
             getBudgetExpenses,
             addExpense,

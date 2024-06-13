@@ -28,7 +28,7 @@ export default function BudgetCard({
                     <div className="d-flex align-items-baseline">
                         {gray && amount}
                         {!gray && (currencyFormatter.format(amount))}
-                        {max && (<span className="text-muted fs-6 ms-1"> 
+                        {max > 0 && (<span className="text-muted fs-6 ms-1"> 
                             / {currencyFormatter.format(max)}
                         </span>
                         )}
