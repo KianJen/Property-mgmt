@@ -14,7 +14,7 @@ export default function MonthCarousel() {
     <Carousel activeIndex={index} onSelect={handleSelect} controls wrap variant='dark' interval={null} slide={null}>
       {months.map(month =>
         <CarouselItem>
-            <Card border='none'>
+            <Card border='light' bg='light'>
                 <CardBody>{month}</CardBody>
             </Card>
         </CarouselItem>
