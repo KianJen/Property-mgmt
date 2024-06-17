@@ -2,10 +2,12 @@ import { Button, Modal, Stack } from "react-bootstrap"
 import { currencyFormatter } from "../utils"
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "../contexts/BudgetsContext"
 //fix shared stats
-export default function ViewExpensesModal({budgetId, handleClose }) {
+export default function ViewExpensesModal({budgetId, handleClose, monthIndex }) {
     
     const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } = useBudgets()
-    const expenses = getBudgetExpenses(budgetId)
+    
+    const expenses = getBudgetExpenses(budgetId,monthIndex)
+    
     const budget = UNCATEGORIZED_BUDGET_ID === budgetId ? //if uncat
     {name: "Uncategorized", id: UNCATEGORIZED_BUDGET_ID} //make new
     : budgets.find(b => b.id === budgetId) //find budget

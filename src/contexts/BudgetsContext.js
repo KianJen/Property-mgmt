@@ -90,12 +90,15 @@ export const BudgetsProvider = ({ children }) => {
         
 
     }
-    function getBudgetNegatives(budgetId){
-        let exp = expenses.filter(expense => expense.budgetId === budgetId)
-        return exp.filter(expense => expense.amount < 0)
+    function getMonthExpenses(monthIndex){
+        return expenses.filter(expense => expense.monthId === months[monthIndex])
     }
-    function getBudgetExpenses(budgetId) {
-        return expenses.filter(expense => expense.budgetId === budgetId) // => = "where"
+    function getBudgetNegatives(budgetId,monthIndex){
+        let exp = expenses.filter(expense => expense.budgetId === budgetId)
+        return exp.filter(expense => (expense.amount < 0 , expense.monthId === months[monthIndex]))
+    }
+    function getBudgetExpenses(budgetId,monthIndex) {
+        return expenses.filter(expense => (expense.budgetId === budgetId , expense.monthId === months[monthIndex])) // => = "where"
     }
 
     function addExpense ({ description, amount, budgetId, expenseType, monthId }) {
@@ -152,6 +155,7 @@ export const BudgetsProvider = ({ children }) => {
             getBudgetNegatives,
             getBudgetExpenseTypes,
             getBudgetExpenses,
+            getMonthExpenses,
             addExpense,
             addBudget,
             deleteBudget,
