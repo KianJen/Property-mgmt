@@ -26,9 +26,11 @@ function App() {
   //const [showPropertyStatsModal , setShowPropertyStatsModal] = useState(false)
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
   const [viewExpensesModalMonthIndex, setViewExpensesModalMonthIndex] = useState()
+  const [uncategorizedBudgetCardMonthIndex, setUncategorizedBudgetCardMonthIndex] = useState()
   const [totalMonthIndex, setTotalMonthIndex] = useState()
   const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
+  const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
   const { budgets, getBudgetExpenses, getBudgetNegatives,months } = useBudgets()
   const [index, setIndex] = useState(0)
   let [mon, setMon] = useState(0)
@@ -45,6 +47,8 @@ function App() {
     setIndex(selectedIndex)
     setMon(selectedIndex)
     setTotalMonthIndex(selectedIndex)
+    setAddExpenseModalMonthIndex(selectedIndex)
+    setUncategorizedBudgetCardMonthIndex(selectedIndex)
     //setPropertyStatsModalMonthIndex(selectedIndex)
   }
   
@@ -77,20 +81,21 @@ function App() {
           alignItems: "flex-start",
         }}
       >
-
+        
         {budgets.map(budget => {
           
           let amount = getBudgetExpenses(budget.id,mon).reduce((total,expense) => total
           + expense.amount, 0) 
-          let tf = getBudgetNegatives(budget.id,mon)
+          //let tf = getBudgetNegatives(budget.id,mon)
           let neg = 0
-          if(tf === undefined){
+          //if(tf === undefined){
 
-          } else { neg = getBudgetNegatives(budget.id,mon).reduce((tot,exp) => tot
+           neg = getBudgetNegatives(budget.id,mon).reduce((tot,exp) => tot
           + exp.amount, 0)
           //amount += neg
-        }
-          budget.max = Math.abs(neg)
+        
+          //budget.max += Math.abs(neg)
+          
           return (
             
             <BudgetCard
@@ -106,6 +111,7 @@ function App() {
           )
         })}
         <UncategorizedBudgetCard onAddExpenseClick={openAddExpenseModal}
+        monthIndex={uncategorizedBudgetCardMonthIndex}
         onViewExpensesClick={() => setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET_ID)}/>
         <TotalBudgetCard 
           monthIndex={totalMonthIndex}
@@ -119,6 +125,7 @@ function App() {
     <AddExpenseModal 
       show={showAddExpenseModal} 
       defaultBudgetId={addExpenseModalBudgetId}
+      defaultMonthIndex={addExpenseModalMonthIndex}
       handleClose={() => setShowAddExpenseModal(false)} //what does handleclose do?
     />
     <ViewExpensesModal 

@@ -3,7 +3,7 @@ import { useRef } from "react"
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "../contexts/BudgetsContext"
 //ui for adding expense
 //mb = margin bottom
-export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
+export function AddExpenseModal({show, handleClose, defaultBudgetId, defaultMonthIndex}) {
     const descriptionRef = useRef()
     const amountRef = useRef()
     const budgetIdRef = useRef()
@@ -21,6 +21,10 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
             expenseType: expenseTypeRef.current.value,
             monthId: monthIdRef.current.value
         })
+        if (amountRef.current.value < 0){
+            let budget = budgets.find(b => b.id === budgetIdRef.current.value)
+            budget.max += Math.abs(amountRef.current.value)
+        }
         handleClose() //close after submit
     }
 
@@ -73,7 +77,7 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId }) {
                     <Form.Group className="mb-3" controlId="budgetid"> 
                         <Form.Label>Month</Form.Label>
                         <Form.Select 
-                         defaultValue={months[0]}
+                         defaultValue={months[defaultMonthIndex]}
                          ref = {monthIdRef}>
                             <option id={"Other"}>Other</option>
                             {months.map(month => (

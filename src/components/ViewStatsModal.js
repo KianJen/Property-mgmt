@@ -8,15 +8,15 @@ export default function ViewStatsModal({ handleClose, show,}) {
     const { expenses, budgets} = useBudgets()
     const { getBudgetExpenses} = useBudgets()
     const amount = expenses.reduce((total, expense ) => total + expense.amount,0) //total spending
-    let bl = 0
+    let bl = 0 //uncat
     const c = getBudgetExpenses(UNCATEGORIZED_BUDGET_ID).reduce(
         (total, expense ) => total + expense.amount,
         0
     )
     if (c > 0){
-        bl = 1
+        bl = 1 
     } 
-    const max = budgets.reduce((total, budget ) => total + budget.max,0) //total max
+    const max = budgets.reduce((total, budget ) => total + budget.max,0) //total max, max for each month?
     return (
         <Modal show={show} onHide={handleClose}> 
             
@@ -33,7 +33,7 @@ export default function ViewStatsModal({ handleClose, show,}) {
                         amount={amount} //total
                         name = "Total" 
                          
-                        max={max} 
+                        max={max/2} 
                         hideButtons/>
                     <BudgetCard  
                         //check for uncat
