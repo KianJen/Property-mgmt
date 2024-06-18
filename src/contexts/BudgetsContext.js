@@ -84,10 +84,10 @@ export const BudgetsProvider = ({ children }) => {
     }
     */
     
-    function getBudgetExpenseTypes(budgetId,typ){
+    function getBudgetExpenseTypes(budgetId,typ,monthIndex){
         let exp = expenses.filter(expense => expense.budgetId === budgetId) //only budget expenses
-        return exp.filter(expense => expense.expenseType === typ) //certain expensetype
-        
+        exp = exp.filter(expense => (expense.expenseType === typ )) //certain expensetype
+        return exp.filter(expense => (expense.monthId === months[monthIndex]))
 
     }
     function getMonthExpenses(monthIndex){

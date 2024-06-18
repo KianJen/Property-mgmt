@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Stack } from 'react-bootstrap';
+import { Button, Stack, useAccordionButton } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container'
 import BudgetCard from './components/BudgetCard';
 import { Carousel, CarouselItem, Card, CardBody } from 'react-bootstrap';
@@ -32,6 +32,7 @@ function App() {
   const { budgets, getBudgetExpenses, getBudgetNegatives,months } = useBudgets()
   const [index, setIndex] = useState(0)
   let [mon, setMon] = useState(0)
+  const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
   //addTypes()
 
   function openAddExpenseModal(budgetId) {
@@ -44,6 +45,7 @@ function App() {
     setIndex(selectedIndex)
     setMon(selectedIndex)
     setTotalMonthIndex(selectedIndex)
+    //setPropertyStatsModalMonthIndex(selectedIndex)
   }
   
   return ( //mb4 is bottom margin my4 top margin, me-auto is left side
@@ -98,7 +100,7 @@ function App() {
             max = {Math.abs(neg)}
             onAddExpenseClick={() => openAddExpenseModal(budget.id)}
             onViewExpensesClick={() => (setViewExpensesModalBudgetId(budget.id), setViewExpensesModalMonthIndex(mon))}
-            onViewPropertyStatsClick={() => setPropertyStatsModalBudgetId(budget.id)}
+            onViewPropertyStatsClick={() => (setPropertyStatsModalBudgetId(budget.id), setPropertyStatsModalMonthIndex(mon))}
             //stats
             />
           )
@@ -132,6 +134,7 @@ function App() {
     <ViewPropertyStatsModal
       
       budgetId={propertyStatsModalBudgetId}
+      monthIndex={propertyStatsModalMonthIndex}
       handleClose={() => setPropertyStatsModalBudgetId()}
     />
     </>

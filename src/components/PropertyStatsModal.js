@@ -3,8 +3,8 @@ import {  useBudgets } from "../contexts/BudgetsContext"
 import BudgetCard from "./BudgetCard"
 //
 //fix shared stats
-export default function ViewPropertyStatsModal({ handleClose, budgetId}) {
-    const { getBudgetExpenseTypes, types, expenses, budgets,getBudgetExpenses } = useBudgets()
+export default function ViewPropertyStatsModal({ handleClose, budgetId, monthIndex}) {
+    const { getBudgetExpenseTypes, types, budgets,getBudgetExpenses, getMonthExpenses, expenses} = useBudgets()
     //const budget = budgets.find(b => b.id === budgetId)
     
    
@@ -43,7 +43,7 @@ export default function ViewPropertyStatsModal({ handleClose, budgetId}) {
                 <Modal.Body>
                    <Stack direction="vertical" gap="3">
                         {types.map(type => {
-                            const amount = getBudgetExpenseTypes(budgetId,type).reduce((total,expense) => total
+                            const amount = getBudgetExpenseTypes(budgetId,type,monthIndex).reduce((total,expense) => total
                             + expense.amount, 0) 
                             return (
                         
