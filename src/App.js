@@ -36,7 +36,12 @@ function App() {
   let [mon, setMon] = useState(0)
   const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
   //addTypes()
+ /*
 
+<UncategorizedBudgetCard onAddExpenseClick={() => openAddExpenseModal()}
+        monthIndex={uncategorizedBudgetCardMonthIndex}
+        onViewExpensesClick={() => setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET_ID)}/>
+*/
   function openAddExpenseModal(budgetId) {
     setShowAddExpenseModal(true)
     setAddExpenseModalBudgetId(budgetId)
@@ -48,7 +53,7 @@ function App() {
     setMon(selectedIndex)
     setTotalMonthIndex(selectedIndex)
     setAddExpenseModalMonthIndex(selectedIndex)
-    setUncategorizedBudgetCardMonthIndex(selectedIndex)
+    //setUncategorizedBudgetCardMonthIndex(selectedIndex)
     //setPropertyStatsModalMonthIndex(selectedIndex)
   }
   
@@ -110,10 +115,9 @@ function App() {
             />
           )
         })}
-        <UncategorizedBudgetCard onAddExpenseClick={openAddExpenseModal}
-        monthIndex={uncategorizedBudgetCardMonthIndex}
-        onViewExpensesClick={() => setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET_ID)}/>
-        <TotalBudgetCard 
+        
+        
+        <TotalBudgetCard
           monthIndex={totalMonthIndex}
           />
       </div>

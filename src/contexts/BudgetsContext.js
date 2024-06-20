@@ -103,7 +103,7 @@ export const BudgetsProvider = ({ children }) => {
     }
     function getBudgetExpenses(budgetId,monthIndex) {
         let exp = expenses.filter(expense => (expense.budgetId === budgetId))
-            return exp.filter(expense => expense.monthId === months[monthIndex]) // => = "where"
+        return exp.filter(expense => expense.monthId === months[monthIndex]) // => = "where"
     }
 
     function addExpense ({ description, amount, budgetId, expenseType, monthId }) {

@@ -53,7 +53,7 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId, defaultMont
                         <Form.Select 
                          defaultValue={defaultBudgetId}
                          ref = {budgetIdRef}>
-                            <option id={UNCATEGORIZED_BUDGET_ID}>Uncategorized</option>
+                            
                             {budgets.map(budget => (
                                 <option key={budget.id} value={budget.id}>
                                     {budget.name}
@@ -79,7 +79,7 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId, defaultMont
                         <Form.Select 
                          defaultValue={months[defaultMonthIndex]}
                          ref = {monthIdRef}>
-                            <option id={"Other"}>Other</option>
+                            
                             {months.map(month => (
                                 <option key={month} value={month}>
                                     {month}

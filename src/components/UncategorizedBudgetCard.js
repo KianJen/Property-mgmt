@@ -4,7 +4,7 @@ import BudgetCard from "./BudgetCard";
 export default function UncategorizedBudgetCard({props,monthIndex}) {
     const {getBudgetExpenses} = useBudgets()
     //broken, fix buttons
-    const amount = getBudgetExpenses(UNCATEGORIZED_BUDGET_ID,monthIndex).reduce(
+    const amount = getBudgetExpenses("Uncategorized",monthIndex).reduce(
         (total, expense ) => total + expense.amount,
         0
     )

@@ -7,8 +7,9 @@ export default function ViewExpensesModal({budgetId, handleClose, monthIndex }) 
     const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } = useBudgets()
     
     const expenses = getBudgetExpenses(budgetId,monthIndex)
-    
+    //error here
     const budget = UNCATEGORIZED_BUDGET_ID === budgetId ? //if uncat
+    //const budget = budgets.find(b => b.id === budgetId)
     {name: "Uncategorized", id: UNCATEGORIZED_BUDGET_ID} //make new
     : budgets.find(b => b.id === budgetId) //find budget
     return (
