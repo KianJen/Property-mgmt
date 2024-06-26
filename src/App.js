@@ -12,7 +12,7 @@ import ViewStatsModal from './components/ViewStatsModal';
 import { AddBudgetModal } from './components/addBudgetModal';
 import { AddExpenseModal } from './components/AddExpenseModal';
 import { useState } from 'react';
-//import { useRef } from 'react';
+
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from './contexts/BudgetsContext';
 import ViewPropertyStatsModal from './components/PropertyStatsModal';
 
@@ -23,10 +23,8 @@ function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [showViewStatsModal, setShowViewStatsModal] = useState(false)
-  //const [showPropertyStatsModal , setShowPropertyStatsModal] = useState(false)
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
   const [viewExpensesModalMonthIndex, setViewExpensesModalMonthIndex] = useState()
-  const [uncategorizedBudgetCardMonthIndex, setUncategorizedBudgetCardMonthIndex] = useState()
   const [totalMonthIndex, setTotalMonthIndex] = useState()
   const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
@@ -35,13 +33,7 @@ function App() {
   const [index, setIndex] = useState(0)
   let [mon, setMon] = useState(0)
   const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
-  //addTypes()
- /*
-
-<UncategorizedBudgetCard onAddExpenseClick={() => openAddExpenseModal()}
-        monthIndex={uncategorizedBudgetCardMonthIndex}
-        onViewExpensesClick={() => setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET_ID)}/>
-*/
+  
   function openAddExpenseModal(budgetId) {
     setShowAddExpenseModal(true)
     setAddExpenseModalBudgetId(budgetId)
@@ -53,8 +45,7 @@ function App() {
     setMon(selectedIndex)
     setTotalMonthIndex(selectedIndex)
     setAddExpenseModalMonthIndex(selectedIndex)
-    //setUncategorizedBudgetCardMonthIndex(selectedIndex)
-    //setPropertyStatsModalMonthIndex(selectedIndex)
+    
   }
   
   return ( //mb4 is bottom margin my4 top margin, me-auto is left side
@@ -86,21 +77,14 @@ function App() {
           alignItems: "flex-start",
         }}
       >
-        
         {budgets.map(budget => {
           
           let amount = getBudgetExpenses(budget.id,mon).reduce((total,expense) => total
           + expense.amount, 0) 
-          //let tf = getBudgetNegatives(budget.id,mon)
+          
           let neg = 0
-          //if(tf === undefined){
-
            neg = getBudgetNegatives(budget.id,mon).reduce((tot,exp) => tot
           + exp.amount, 0)
-          //amount += neg
-        
-          //budget.max += Math.abs(neg)
-          
           return (
             
             <BudgetCard
@@ -111,7 +95,7 @@ function App() {
             onAddExpenseClick={() => openAddExpenseModal(budget.id)}
             onViewExpensesClick={() => (setViewExpensesModalBudgetId(budget.id), setViewExpensesModalMonthIndex(mon))}
             onViewPropertyStatsClick={() => (setPropertyStatsModalBudgetId(budget.id), setPropertyStatsModalMonthIndex(mon))}
-            //stats
+            
             />
           )
         })}
@@ -133,7 +117,7 @@ function App() {
       handleClose={() => setShowAddExpenseModal(false)} //what does handleclose do?
     />
     <ViewExpensesModal 
-      //show = {showViewExpensesModal}
+      
       budgetId={viewExpensesModalBudgetId}
       monthIndex={viewExpensesModalMonthIndex}
       handleClose={() => setViewExpensesModalBudgetId()}

@@ -1,6 +1,6 @@
 import { UNCATEGORIZED_BUDGET_ID, useBudgets} from "../contexts/BudgetsContext";
 import BudgetCard from "./BudgetCard";
-
+//unused
 export default function UncategorizedBudgetCard({props,monthIndex}) {
     const {getBudgetExpenses} = useBudgets()
     //broken, fix buttons

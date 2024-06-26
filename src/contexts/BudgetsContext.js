@@ -12,7 +12,7 @@ export function useBudgets(){
 }
 
 /*
-{
+{ budget
  id:
  name:
  max:
@@ -20,7 +20,7 @@ export function useBudgets(){
  
 }
 
-{
+{ expense
  id:
  budgetId:
  amount:
@@ -64,29 +64,6 @@ export const BudgetsProvider = ({ children }) => {
         "December"
     ])
        
-    //const [se,setSe] = useLocalStorage("Schedule_E",[])
-    //const [dict, setDict] = useLocalStorage("dict", {})
-    /*
-    let dict = {
-        
-        "Advertising": 0,
-        "Auto & Travel": 0,
-        "Cleaning/Maintenance": 0,
-        "Commissions": 0,
-        "Insurance": 0,
-        "Legal/Professional Fees": 0,
-        "Management": 0,
-        "Mortgage Interest To Banks": 0,
-        "Other Interest": 0,
-        "Repairs": 0,
-        "Supplies": 0,
-        "Taxes": 0,
-        "Utilities": 0,
-        "Other" : 0
-        
-    }
-    */
-    
     function getBudgetExpenseTypes(budgetId,typ,monthIndex){
         let exp = expenses.filter(expense => expense.budgetId === budgetId) //only budget expenses
         exp = exp.filter(expense => (expense.expenseType === typ )) //certain expensetype
@@ -107,17 +84,9 @@ export const BudgetsProvider = ({ children }) => {
     }
 
     function addExpense ({ description, amount, budgetId, expenseType, monthId }) {
-        //let budget = budgets.find(b => b.id === budgetId)
+        
         setExpenses(prevExpenses => {
-            //const found = prevExpenses.find(expense => (expense.expenseType === expenseType) && (expense.budgetId === budgetId))
-            //if(found !== undefined) { //no dupilcate expensetypes
-                
-                //found.amount = found.amount + amount
-                //return prevExpenses
-            //}
-            //budget.dict.set(expenseType , amount);
-            //let am = budget.dict.get(expenseType)
-            //budget.dict.set("Advertising",1)
+            
             return [...prevExpenses, { id: uuidV4(), description, amount, budgetId, expenseType, monthId}] // make rand id
         })
     }
@@ -127,7 +96,7 @@ export const BudgetsProvider = ({ children }) => {
             if(prevBudgets.find(budget => budget.name === name)) { //no dupilcate budgets
                 return prevBudgets
             } 
-            //const dict = new Map()
+            
             
             
                 
