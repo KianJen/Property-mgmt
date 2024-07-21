@@ -9,17 +9,18 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId, defaultMont
     const budgetIdRef = useRef()
     const expenseTypeRef = useRef()
     const monthIdRef = useRef()
-    
+    //const negativeRef = useRef()
     const dayRef = useRef()
     const yearRef = useRef()
     const { addExpense , budgets, types, months } = useBudgets()
     
-   
+    let neg = false
     function handleSubmit(e) {
         e.preventDefault()
         addExpense({
             description: descriptionRef.current.value,
-            amount: parseFloat(amountRef.current.value),
+
+            amount: neg === true ? parseFloat(amountRef.current.value) : parseFloat(amountRef.current.value) * -1,
             budgetId: budgetIdRef.current.value,
             expenseType: expenseTypeRef.current.value,
             monthId: monthIdRef.current.value,
@@ -27,6 +28,7 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId, defaultMont
             year: yearRef.current.value,
             day: dayRef.current.value
         })
+        
         if (amountRef.current.value < 0){ //profit calc
             let budget = budgets.find(b => b.id === budgetIdRef.current.value)
             budget.max += Math.abs(amountRef.current.value)
@@ -45,15 +47,20 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId, defaultMont
                         <Form.Label>Description</Form.Label>
                         <Form.Control ref = {descriptionRef} type="text" required />
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="amount"> 
-                        <Form.Label>Amount</Form.Label>
+                    <Form.Label>Amount</Form.Label>
+                    <InputGroup className="mb-3" controlId="amount"> 
+                        <InputGroup.Checkbox id = "negative-expense" onClick={(e) => {
+                            neg = e.target.checked
+                        }}/>
                         <Form.Control 
-                         ref = {amountRef}
+                         ref = { amountRef  }
                          type="number" 
                          required 
-                           
+                         placeholder="Check the box for positive expenses"
                          step={0.01}/> 
-                    </Form.Group>
+                    
+                    </InputGroup>
+                    
                     <Form.Group className="mb-3" controlId="budgetid"> 
                         <Form.Label>Budget</Form.Label>
                         <Form.Select 
@@ -80,18 +87,16 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId, defaultMont
                             ))}
                         </Form.Select>
                     </Form.Group>
-                    <FormGroup className="mb-3" controlId="budgetid">
-                        <InputGroup className="mb-3" controlId="budgetid">
-                            <InputGroup.Text>Day/Month/Year</InputGroup.Text>
-                                <Form.Control 
-                                //defaultValue={months[defaultMonthIndex]}
-                                ref = {dayRef}
-                                type = "number"
-                                required
-                                >
-                                </Form.Control>
-                                
-                            
+                    <Form.Label>Date</Form.Label>
+                    <InputGroup className="mb-3" controlId="budgetid">
+                        <InputGroup.Text>Day/Month/Year</InputGroup.Text>
+                             <Form.Control 
+                            //defaultValue={months[defaultMonthIndex]}
+                            ref = {dayRef}
+                            type = "number"
+                            required
+                            >
+                            </Form.Control>
                             <FormSelect id = "month-dropdown" defaultValue={months[defaultMonthIndex]}  ref={monthIdRef}> 
                                     {months.map(month => (
                                         <option key={month} value = {month}>
@@ -99,16 +104,14 @@ export function AddExpenseModal({show, handleClose, defaultBudgetId, defaultMont
                                         </option>
                                     ))}
                             </FormSelect>
-                                <Form.Control 
-                                //placeholder = {defaultYear}
-                                
+                            <Form.Control 
+                            //placeholder = {defaultYear}
                                 ref = {yearRef}
                                 type = "number"
                                 required
                                 >
-                                </Form.Control>
+                            </Form.Control>
                         </InputGroup>
-                    </FormGroup>
                     <div className="d-flex justify-content-end">
                         <Button variant = "primary" type="submit">Add</Button>
                     </div>

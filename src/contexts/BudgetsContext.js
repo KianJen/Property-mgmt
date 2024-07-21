@@ -55,7 +55,22 @@ export const BudgetsProvider = ({ children }) => {
         "Taxes",
         "Utilities",
         "Other"])
-    const [months,setMonths] = useLocalStorage("months",[{
+    const [months,setMonths] = useLocalStorage("months",[
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+])
+    /*
+    [{
         "January": 1,
         "February": 2,
         "March": 3 ,
@@ -68,8 +83,8 @@ export const BudgetsProvider = ({ children }) => {
         "October": 10,
         "November": 11,
         "December" : 12
-    }])
-       
+}])
+        */
     function getBudgetExpenseTypes(budgetId,typ,monthIndex){
         let exp = expenses.filter(expense => expense.budgetId === budgetId) //only budget expenses
         exp = exp.filter(expense => (expense.expenseType === typ )) //certain expensetype

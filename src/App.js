@@ -29,7 +29,7 @@ function App() {
   const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
   const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
-  const { budgets, getBudgetExpenses, getBudgetNegatives, months, years } = useBudgets()
+  const { budgets, getBudgetExpenses, getBudgetNegatives, months} = useBudgets()
   const [index, setIndex] = useState(0)
   let [mon, setMon] = useState(0)
   const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
