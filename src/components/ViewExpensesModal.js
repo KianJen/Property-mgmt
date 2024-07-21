@@ -4,7 +4,7 @@ import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "../contexts/BudgetsContext"
 
 export default function ViewExpensesModal({budgetId, handleClose, monthIndex }) {
     
-    const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } = useBudgets()
+    const { getBudgetExpenses, budgets, deleteBudget, deleteExpense, months } = useBudgets()
     
     const expenses = getBudgetExpenses(budgetId,monthIndex)
     
@@ -32,7 +32,7 @@ export default function ViewExpensesModal({budgetId, handleClose, monthIndex }) 
                    <Stack direction="vertical" gap="3">
                     {expenses.map(expense => ( //fs = font size
                         <Stack direction="horizontal" gap="2" key={expense.id}>
-                            <div className="me-auto fs-4">{expense.description}</div> 
+                            <div className="me-auto fs-4">{expense.description} - {months.expense.monthId}/{expense.day}/{expense.year}</div> 
                             <div className="fs-5">{currencyFormatter.format(expense.amount)}</div>
                             <Button onClick={() => deleteExpense(expense)} size="sm" variant="outline-danger">
                                 &times;

@@ -26,43 +26,49 @@ export function useBudgets(){
  amount:
  description
  expensetype
+ monthid
  monthindex
-
+ year
+ day
 }
 */
 
 export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useLocalStorage("budgets", [])
     const [expenses, setExpenses] = useLocalStorage("expenses", [])
+    const [years, setYears] = useLocalStorage("years", [])
     const [types, setTypes] = useLocalStorage("types", [
         "Advertising",
         "Auto & Travel",
         "Cleaning/Maintenance",
         "Commissions",
         "Insurance",
+        "Labor",
         "Legal/Professional Fees",
         "Management",
+        "Materials",
         "Mortgage Interest To Banks",
         "Other Interest",
         "Repairs",
+        "Rent Collected",
         "Supplies",
         "Taxes",
         "Utilities",
         "Other"])
-    const [months,setMonths] = useLocalStorage("months",[
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    ])
+    const [months,setMonths] = useLocalStorage("months",[{
+        "January": 1,
+        "February": 2,
+        "March": 3 ,
+        "April": 4,
+        "May": 5,
+        "June": 6,
+        "July": 7,
+        "August": 8,
+        "September": 9,
+        "October": 10,
+        "November": 11,
+        "December" : 12
+    }])
        
     function getBudgetExpenseTypes(budgetId,typ,monthIndex){
         let exp = expenses.filter(expense => expense.budgetId === budgetId) //only budget expenses
@@ -83,12 +89,17 @@ export const BudgetsProvider = ({ children }) => {
         return exp.filter(expense => expense.monthId === months[monthIndex]) // => = "where"
     }
 
-    function addExpense ({ description, amount, budgetId, expenseType, monthId }) {
-        
+    function addExpense ({ description, amount, budgetId, expenseType, monthId, day, year }) {
+        if(years.find(item => item === year) === undefined){
+            setYears(prevYears => {
+                return [...prevYears, year]
+            })
+        }
         setExpenses(prevExpenses => {
             
-            return [...prevExpenses, { id: uuidV4(), description, amount, budgetId, expenseType, monthId}] // make rand id
+            return [...prevExpenses, { id: uuidV4(), description, amount, budgetId, expenseType, monthId, day, year}] // make rand id
         })
+       
     }
     function addBudget ({name, max}) {
         

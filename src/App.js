@@ -1,11 +1,11 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Stack, useAccordionButton } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container'
 import BudgetCard from './components/BudgetCard';
 import { Carousel, CarouselItem, Card, CardBody } from 'react-bootstrap';
-import UncategorizedBudgetCard from './components/UncategorizedBudgetCard';
+//import UncategorizedBudgetCard from './components/UncategorizedBudgetCard';
 import TotalBudgetCard from './components/TotalBudgetCard';
 import ViewExpensesModal from './components/ViewExpensesModal';
 import ViewStatsModal from './components/ViewStatsModal';
@@ -13,7 +13,7 @@ import { AddBudgetModal } from './components/addBudgetModal';
 import { AddExpenseModal } from './components/AddExpenseModal';
 import { useState } from 'react';
 
-import { UNCATEGORIZED_BUDGET_ID, useBudgets } from './contexts/BudgetsContext';
+import {  useBudgets } from './contexts/BudgetsContext';
 import ViewPropertyStatsModal from './components/PropertyStatsModal';
 
 
@@ -29,7 +29,7 @@ function App() {
   const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
   const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
-  const { budgets, getBudgetExpenses, getBudgetNegatives,months } = useBudgets()
+  const { budgets, getBudgetExpenses, getBudgetNegatives, months, years } = useBudgets()
   const [index, setIndex] = useState(0)
   let [mon, setMon] = useState(0)
   const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
