@@ -36,6 +36,9 @@ export function useBudgets(){
 export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useLocalStorage("budgets", [])
     const [expenses, setExpenses] = useLocalStorage("expenses", [])
+    const [currentExpenses, setCurrentExpenses] = useLocalStorage("current-expenses", [])
+    const [currentMonths, setCurrentMonths] = useLocalStorage("current-months", [])
+    const [currentYears, setCurrentYears] = useLocalStorage("current-years", [])
     const [years, setYears] = useLocalStorage("years", [])
     const [types, setTypes] = useLocalStorage("types", [
         "Advertising",
@@ -85,6 +88,39 @@ export const BudgetsProvider = ({ children }) => {
         "December" : 12
 }])
         */
+
+    function addMonth(cmonth){
+        setCurrentMonths(prevCurrentMonths => {
+            return [...prevCurrentMonths, cmonth]
+        })
+    }
+    function addYear(cyear){
+        setCurrentYears(prevCurrentYears => {
+            return [...prevCurrentYears, cyear]
+        })
+    }
+    function Aggregate(){
+        let n = expenses.filter(function(item) {
+            for (var key in currentMonths) {
+              if (item[key].month === undefined || item[key].month != currentMonths[key])
+                return false
+            }
+        })
+        n = n.filter(function(item) {
+            for (var key in currentYears) {
+              if (item[key].year === undefined || item[key].year != currentYears[key])
+                return false
+            }
+        })
+        setCurrentExpenses(n)
+    }
+    function getAggExpenses(budgetId){
+        return currentExpenses.filter(expense => expense.budgetId = budgetId)
+    }
+    function getAggNegatives(budgetId){
+        let a = currentExpenses.filter(expense => expense.budgetId = budgetId)
+        return a.filter(expense => (expense.amount < 0))
+    }
     function getBudgetExpenseTypes(budgetId,typ,monthIndex){
         let exp = expenses.filter(expense => expense.budgetId === budgetId) //only budget expenses
         exp = exp.filter(expense => (expense.expenseType === typ )) //certain expensetype
@@ -150,11 +186,18 @@ export const BudgetsProvider = ({ children }) => {
             expenses,
             types,
             months,
+            currentExpenses,
+            currentMonths,
             getBudgetNegatives,
             getBudgetExpenseTypes,
             getBudgetExpenses,
             getMonthExpenses,
+            Aggregate,
+            getAggExpenses,
+            getAggNegatives,
             addExpense,
+            addMonth,
+            addYear,
             addBudget,
             deleteBudget,
             deleteExpense,

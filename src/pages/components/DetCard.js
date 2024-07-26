@@ -22,7 +22,7 @@ export default function DetCard({
     }
     
     return( //dflex spaces title and number
-        <Card className={classNames.join(" ")} bg="dark" border="primary">
+        <Card className={classNames.join(" ")} bg="dark" border="primary" style={{marginTop: '20px'}}>
             <Card.Body>
                 <Card.Title className="d-flex justify-content-between 
                 align-items-baseline fw-normal mb-3"> 
@@ -45,7 +45,7 @@ export default function DetCard({
                         now = {amount}
                     />
                 
-                <Accordion style={{marginTop: '20px'}}>
+                <Accordion style={{marginTop: '20px'}} defaultActiveKey="0">
                     <AccordionItem>
                         <AccordionHeader>Details</AccordionHeader>
                         <AccordionBody>
