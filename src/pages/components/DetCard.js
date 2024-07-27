@@ -6,15 +6,16 @@ export default function DetCard({
     amount,
     max,
     gray,
-    
+    budgetId,
     
     onAddExpenseClick,
     
-    onViewExpensesClick,
-    onViewPropertyStatsClick
+    
+    
 }){
-    const { expenses, months, deleteExpense} = useBudgets()
+    const { months, deleteExpense, getAggExpenses} = useBudgets()
     const classNames = []
+    const expenses = getAggExpenses(budgetId)
     if(amount > max) {
         classNames.push("bg-success" , "bg-opacity-10")
     } else if (gray) {
@@ -67,9 +68,9 @@ export default function DetCard({
                                     onClick={onAddExpenseClick}>
                                     Add Expense
                                 </Button>
-                                <Button onClick={onViewExpensesClick} variant="outline-secondary">View Expenses</Button>
                                 
-                                <Button onClick={onViewPropertyStatsClick} variant="success">Stats</Button>
+                                
+                                
                             </Stack>
                         </AccordionBody>
                     </AccordionItem>

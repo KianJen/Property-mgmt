@@ -27,7 +27,6 @@ export function useBudgets(){
  description
  expensetype
  monthid
- monthindex
  year
  day
 }
@@ -36,10 +35,10 @@ export function useBudgets(){
 export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useLocalStorage("budgets", [])
     const [expenses, setExpenses] = useLocalStorage("expenses", [])
-    const [currentExpenses, setCurrentExpenses] = useLocalStorage("current-expenses", [])
-    const [currentMonths, setCurrentMonths] = useLocalStorage("current-months", [])
-    const [currentYears, setCurrentYears] = useLocalStorage("current-years", [])
-    const [years, setYears] = useLocalStorage("years", [])
+    const [currentExpenses, setCurrentExpenses] = useLocalStorage("currentExpenses", [])
+    const [currentMonths, setCurrentMonths] = useLocalStorage("currentMonths", [])
+    const [currentYears, setCurrentYears] = useLocalStorage("currentYears", [])
+    const [years, setYears] = useLocalStorage("years", ["2024"])
     const [types, setTypes] = useLocalStorage("types", [
         "Advertising",
         "Auto & Travel",
@@ -100,26 +99,19 @@ export const BudgetsProvider = ({ children }) => {
         })
     }
     function Aggregate(){
-        let n = expenses.filter(function(item) {
-            for (var key in currentMonths) {
-              if (item[key].month === undefined || item[key].month != currentMonths[key])
-                return false
-            }
-        })
-        n = n.filter(function(item) {
-            for (var key in currentYears) {
-              if (item[key].year === undefined || item[key].year != currentYears[key])
-                return false
-            }
-        })
-        setCurrentExpenses(n)
+        let exp = expenses.filter(expense => currentYears.some(year => expense.year.includes(year)))
+        setCurrentExpenses(exp.filter(expense => currentMonths.some(month => expense.monthId.includes(month))))
+       
+        
+        setCurrentMonths([])
+        setCurrentYears([])
     }
     function getAggExpenses(budgetId){
-        return currentExpenses.filter(expense => expense.budgetId = budgetId)
+        return currentExpenses.filter(expense => expense.budgetId === budgetId)
     }
     function getAggNegatives(budgetId){
-        let a = currentExpenses.filter(expense => expense.budgetId = budgetId)
-        return a.filter(expense => (expense.amount < 0))
+        let a = currentExpenses.filter(expense => expense.budgetId === budgetId)
+        return a.filter(expense => expense.amount < 0)
     }
     function getBudgetExpenseTypes(budgetId,typ,monthIndex){
         let exp = expenses.filter(expense => expense.budgetId === budgetId) //only budget expenses
@@ -186,8 +178,10 @@ export const BudgetsProvider = ({ children }) => {
             expenses,
             types,
             months,
+            years,
             currentExpenses,
             currentMonths,
+            currentYears,
             getBudgetNegatives,
             getBudgetExpenseTypes,
             getBudgetExpenses,

@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import React from "react"
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button, Card, Container, Row, Stack, CardBody, CardTitle, Col, Dropdown,DropdownToggle,DropdownItem } from "react-bootstrap";
 import {  useBudgets } from './contexts/BudgetsContext';
 import DetCard from './components/DetCard'
+import { AddExpenseModal } from "./components/AddExpenseModal";
 function Aggr(){
     document.body.style.backgroundColor = 'black'
     
@@ -15,8 +16,12 @@ function Aggr(){
     const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
     const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
     const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
-    const { budgets,  getAggExpenses, getAggNegatives} = useBudgets()
+    const { budgets,  getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate} = useBudgets() 
+    
     const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
+    const currentYearRef = useRef()
+    const currentMonthRef = useRef()
+    
     function openAddExpenseModal(budgetId) {
         setShowAddExpenseModal(true)
         setAddExpenseModalBudgetId(budgetId)
@@ -29,34 +34,40 @@ function Aggr(){
             <Container className="my-4" data-bs-theme="dark" gap={3}>
                 <Row className="row">
                     <Card bg="dark" border="primary">
-                        <CardBody >
+                        <CardBody>
                             <Stack direction="horizontal" gap="2">
                                     <Link to='/' className="me-auto">
                                         <Button>Home</Button>
                                     </Link>
                                     <Dropdown className="d-inline mx-2" autoClose={false}>
-                                        <Dropdown.Toggle id="dropdown-autoclose-false">
+                                        <Dropdown.Toggle>
                                         Year(s)
                                         </Dropdown.Toggle>
 
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
+                                        <Dropdown.Menu ref={currentYearRef}>
+
+                                            {years?.map(year => {
+                                                return(
+                                                <Dropdown.Item onClick={() => addYear(year)}>{year}</Dropdown.Item>
+                                                )
+                                            })}
                                         </Dropdown.Menu>
                                     </Dropdown>
                                     <Dropdown className="d-inline mx-2" autoClose={false}>
-                                        <Dropdown.Toggle id="dropdown-autoclose-false">
-                                        Months
+                                        <Dropdown.Toggle >
+                                        Month(s)
                                         </Dropdown.Toggle>
 
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
+                                        <Dropdown.Menu ref={currentMonthRef}>
+                                            
+                                            {months?.map(month => {
+                                                return(
+                                                <Dropdown.Item onClick={() => addMonth(month)}>{month}</Dropdown.Item>
+                                                )
+                                            })}
                                         </Dropdown.Menu>
                                     </Dropdown>
-                                    <Button>Search</Button>
+                                    <Button onClick={() => Aggregate()}>Search</Button>
                             </Stack>
                         </CardBody>
                     </Card>
@@ -73,12 +84,12 @@ function Aggr(){
                         <Col md={4}>
                             <DetCard 
                                 name = {budget.name}
-                                key = {budget.id}
+                                
                                 amount = {amount} 
-                                max = {2}
+                                budgetId = {budget.id}
+                                max = {Math.abs(neg)}
                                 onAddExpenseClick={() => openAddExpenseModal(budget.id)}
-                                onViewExpensesClick={() => (setViewExpensesModalBudgetId(budget.id), setViewExpensesModalMonthIndex(0))}
-                                onViewPropertyStatsClick={() => (setPropertyStatsModalBudgetId(budget.id), setPropertyStatsModalMonthIndex(0))}
+                                
                             ></DetCard>
                         </Col>
                         )  
@@ -86,9 +97,16 @@ function Aggr(){
                 </Row>
                 
             </Container>
+            
+            <AddExpenseModal 
+                show={showAddExpenseModal} 
+                defaultBudgetId={addExpenseModalBudgetId}
+                defaultMonthIndex={addExpenseModalMonthIndex}
+                handleClose={() => setShowAddExpenseModal(false)} 
+            />
             </>
         )
     
-}
+}//add show condistions
 
 export default Aggr;
