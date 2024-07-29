@@ -98,6 +98,9 @@ export const BudgetsProvider = ({ children }) => {
             return [...prevCurrentYears, cyear]
         })
     }
+    function Total(){
+        setCurrentExpenses(expenses)
+    }
     function Aggregate(){
         let exp = expenses.filter(expense => currentYears.some(year => expense.year.includes(year)))
         setCurrentExpenses(exp.filter(expense => currentMonths.some(month => expense.monthId.includes(month))))
@@ -170,6 +173,9 @@ export const BudgetsProvider = ({ children }) => {
         setExpenses(prevExpenses => {
             return prevExpenses.filter(expense => expense.id !== id) //return budgets without deleted one
         })
+        setCurrentExpenses(prevCurrentExpenses => {
+            return prevCurrentExpenses.filter(expense => expense.id !== id) //return budgets without deleted one
+        })
     }
     return (
         <BudgetsContext.Provider value={{
@@ -186,6 +192,7 @@ export const BudgetsProvider = ({ children }) => {
             getBudgetExpenseTypes,
             getBudgetExpenses,
             getMonthExpenses,
+            Total,
             Aggregate,
             getAggExpenses,
             getAggNegatives,

@@ -1,21 +1,16 @@
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Button, Card, ProgressBar, Stack } from "react-bootstrap";
 import { currencyFormatter } from "../../utils";
 import { useBudgets } from "../contexts/BudgetsContext";
-export default function DetCard({
-    name,
-    amount,
-    max,
+export default function TotalDetCard({
     gray,
-    budgetId,
-    hidebuttons,
-    onAddExpenseClick,
-    
-    
-    
 }){
-    const { months, deleteExpense, getAggExpenses} = useBudgets()
+    const { months, deleteExpense, currentExpenses} = useBudgets()
     const classNames = []
-    const expenses = getAggExpenses(budgetId)
+    const amount = currentExpenses.reduce((total,expense) => total
+    + expense.amount, 0) 
+    let max = currentExpenses.filter(expense => expense.amount < 0).reduce((total,expense) => total
+    + expense.amount, 0) 
+    max = Math.abs(max)
     if(amount > max) {
         classNames.push("bg-success" , "bg-opacity-10")
     } else if (gray) {
@@ -35,7 +30,7 @@ export default function DetCard({
             <Card.Body>
                 <Card.Title className="d-flex justify-content-between 
                 align-items-baseline fw-normal mb-3"> 
-                    <div className="me-2">{name}</div>
+                    <div className="me-2">Total</div>
                     <div className="d-flex align-items-baseline">
                         
                         {(currencyFormatter.format(amount))}
@@ -61,7 +56,7 @@ export default function DetCard({
                         <AccordionHeader>Details</AccordionHeader>
                         <AccordionBody>
                             <Stack direction="vertical" gap="3">
-                                {expenses.map(expense => ( //fs = font size
+                                {currentExpenses.map(expense => ( //fs = font size
                                     <Stack direction="horizontal" gap="2" key={expense.id}>
                                         <div className="me-auto fs-4">{expense.description} - {months.indexOf(expense.monthId) + 1}/{expense.day}/{expense.year}</div> 
                                         <div className="fs-5">{currencyFormatter.format(expense.amount)}</div>
@@ -71,19 +66,6 @@ export default function DetCard({
                                     </Stack>
                                 ))}
                             </Stack>
-                            {!hidebuttons &&
-                            <Stack direction = "horizontal" gap="2" className="mt-4">
-                                <Button 
-                                    variant = "outline-primary" 
-                                    className="ms-auto" 
-                                    onClick={onAddExpenseClick}>
-                                    Add Expense
-                                </Button>
-                                
-                                
-                                
-                            </Stack>
-                            }
                         </AccordionBody>
                     </AccordionItem>
                 </Accordion>

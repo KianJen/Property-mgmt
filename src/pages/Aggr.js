@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { Button, Card, Container, Row, Stack, CardBody, CardTitle, Col, Dropdown,DropdownToggle,DropdownItem } from "react-bootstrap";
 import {  useBudgets } from './contexts/BudgetsContext';
 import DetCard from './components/DetCard'
+import TotalDetCard from "./components/TotalDetCard";
 import { AddExpenseModal } from "./components/AddExpenseModal";
 function Aggr(){
     document.body.style.backgroundColor = 'black'
@@ -16,7 +17,7 @@ function Aggr(){
     const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
     const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
     const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
-    const { budgets,  getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate, currentYears, currentMonths,currentExpenses} = useBudgets() 
+    const { budgets, Total, getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate, currentYears, currentMonths,currentExpenses} = useBudgets() 
     
     const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
     const currentYearRef = useRef()
@@ -50,6 +51,9 @@ function Aggr(){
                                             {currentMonths}
                                         </CardBody>
                                     </Card>
+                                    <Button onClick={() => Total()}>
+                                        Total
+                                    </Button>
                                     <Dropdown className="d-inline mx-2" autoClose={false}>
                                         <Dropdown.Toggle>
                                         Year(s)
@@ -106,7 +110,7 @@ function Aggr(){
                         )  
                     })}
                     <Col md={4}>
-                        
+                        <TotalDetCard hidebuttons></TotalDetCard>
                     </Col>
                 </Row>
                 
