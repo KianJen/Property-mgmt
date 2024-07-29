@@ -2,11 +2,11 @@ import { Button, Modal, Stack } from "react-bootstrap"
 import { currencyFormatter } from "../../utils"
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "../contexts/BudgetsContext"
 
-export default function ViewExpensesModal({budgetId, handleClose, monthIndex }) {
+export default function ViewExpensesModal({budgetId, handleClose, monthIndex, yearIndex }) {
     
-    const { getBudgetExpenses, budgets, deleteBudget, deleteExpense, months } = useBudgets()
+    const { getBudgetExpenses, budgets, deleteBudget, deleteExpense, months, years } = useBudgets()
     
-    const expenses = getBudgetExpenses(budgetId,monthIndex)
+    const expenses = getBudgetExpenses(budgetId,monthIndex).filter(expense => expense.year == years[yearIndex])
     
     const budget = UNCATEGORIZED_BUDGET_ID === budgetId ? //if uncat
     

@@ -16,7 +16,7 @@ function Aggr(){
     const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
     const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
     const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
-    const { budgets,  getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate} = useBudgets() 
+    const { budgets,  getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate, currentYears, currentMonths} = useBudgets() 
     
     const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
     const currentYearRef = useRef()
@@ -28,6 +28,7 @@ function Aggr(){
       }
     
     //card with dropdown for top expenses
+    // add total
         return(
             
             <>
@@ -39,6 +40,16 @@ function Aggr(){
                                     <Link to='/' className="me-auto">
                                         <Button>Home</Button>
                                     </Link>
+                                    <Card>
+                                        <CardBody>
+                                            {currentYears}
+                                        </CardBody>
+                                    </Card>
+                                    <Card>
+                                        <CardBody>
+                                            {currentMonths}
+                                        </CardBody>
+                                    </Card>
                                     <Dropdown className="d-inline mx-2" autoClose={false}>
                                         <Dropdown.Toggle>
                                         Year(s)

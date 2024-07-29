@@ -1,6 +1,6 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Stack, useAccordionButton } from 'react-bootstrap';
+import { Button, ButtonGroup, Stack, useAccordionButton } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container'
 import BudgetCard from './components/BudgetCard';
 import { Carousel, CarouselItem, Card, CardBody } from 'react-bootstrap';
@@ -24,37 +24,89 @@ export default function Home() {
   const [showViewStatsModal, setShowViewStatsModal] = useState(false)
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
   const [viewExpensesModalMonthIndex, setViewExpensesModalMonthIndex] = useState()
+  const [viewExpensesModalYearIndex, setViewExpenseModalYearIndex] = useState()
   const [totalMonthIndex, setTotalMonthIndex] = useState()
+  const [totalYearIndex, setTotalYearIndex] = useState()
   const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
   const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
-  const { budgets, getBudgetExpenses, getBudgetNegatives, months} = useBudgets()
-  const [index, setIndex] = useState(0)
+  const { budgets, getBudgetExpenses, getBudgetNegatives, months, years} = useBudgets()
+  
+  let [cindex,setcindex] = useState(0)
+  let [yindex,setyindex] = useState(0)
   let [mon, setMon] = useState(0)
   const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
+  const [propertyStatsModalYearIndex, setPropertyStatsModalYearIndex] = useState()
   
   function openAddExpenseModal(budgetId) {
     setShowAddExpenseModal(true)
     setAddExpenseModalBudgetId(budgetId)
   }
+  const right = ">"
+  const left = "<"
   
+  function moveLeft(){
+    if(cindex == 0){
+      setcindex(11)
+      cindex = 11
+    } else {
+      setcindex(cindex - 1)
+      cindex--
+    }
+    setMon(cindex)
+    setTotalMonthIndex(cindex)
+    setAddExpenseModalMonthIndex(cindex)
+    
+  }
+
+  function moveRight(){
+    if(cindex == 11){
+      setcindex(0)
+      cindex = 0
+    } else {
+      setcindex(cindex + 1)
+      cindex++
+    }
+    setMon(cindex)
+    setTotalMonthIndex(cindex)
+    setAddExpenseModalMonthIndex(cindex)
+    
+  }
+
+  function ymoveLeft(){
+    if(yindex == 0){
+      setyindex(years.length - 1)
+      yindex = years.length - 1
+    } else {
+      setyindex(yindex - 1)
+      yindex--
+    }
+    //setMon(yindex)
+    setTotalYearIndex(yindex)
+    setViewExpenseModalYearIndex(yindex)
+    setPropertyStatsModalYearIndex(yindex)
+  }
+
+  function ymoveRight(){
+    if(yindex == (years.length - 1)){
+      setyindex(0)
+      yindex = 0
+    } else {
+      setyindex(yindex + 1)
+      yindex++
+    }
+    //setMon(yindex)
+    setTotalYearIndex(yindex)
+    setViewExpenseModalYearIndex(yindex)
+    setPropertyStatsModalYearIndex(yindex)
+  }
+  /*
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex)
     setMon(selectedIndex)
     setTotalMonthIndex(selectedIndex)
     setAddExpenseModalMonthIndex(selectedIndex)
-    
-  }
-  
-  return ( //mb4 is bottom margin my4 top margin, me-auto is left side
-    <>
-      <Container className='my-4'> 
-        <Stack direction="horizontal" gap="2" className="mb-4"> 
-          <h1 className="me-auto">Properties</h1>
-          <Link to="/aggr">
-              <Button className='me-auto'>Custom View</Button>
-          </Link>
-          <Carousel activeIndex={index} onSelect={handleSelect} controls wrap variant='dark' interval={null} slide={null}>
+    <Carousel activeIndex={index} onSelect={handleSelect} controls wrap variant='dark' interval={null} slide={null}>
             
             {months.map(month =>
               <CarouselItem>
@@ -64,6 +116,28 @@ export default function Home() {
               </CarouselItem>
               )}
           </Carousel>
+    
+  }
+  */
+  return ( //mb4 is bottom margin my4 top margin, me-auto is left side
+    <>
+      <Container className='my-4'> 
+        <Stack direction="horizontal" gap="2" className="mb-4"> 
+          <h1 className="me-auto">Quick View</h1>
+          <Link to="/aggr" className='me-auto'>
+              <Button>Custom View</Button>
+          </Link>
+          <ButtonGroup>
+            <Button onClick={moveLeft}>{left}</Button>
+            <Button>{months[cindex]}</Button>
+            <Button onClick={moveRight}>{right}</Button>
+          </ButtonGroup>
+          <ButtonGroup>
+            <Button onClick={ymoveLeft}>{left}</Button>
+            <Button>{years[yindex]}</Button>
+            <Button onClick={ymoveRight}>{right}</Button>
+          </ButtonGroup>
+          
           <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Property</Button>
           <Button variant="outline-primary" onClick={openAddExpenseModal}>Add Expense</Button>
           <Button variant="success" onClick={() => {setShowViewStatsModal(true)}}>Stats</Button>
@@ -80,12 +154,13 @@ export default function Home() {
         >
           {budgets.map(budget => {
             
-            let amount = getBudgetExpenses(budget.id,mon).reduce((total,expense) => total
+            let amount = getBudgetExpenses(budget.id,mon).filter(expense => expense.year == years[yindex]).reduce((total,expense) => total
             + expense.amount, 0) 
             
             let neg = 0
-            neg = getBudgetNegatives(budget.id,mon).reduce((tot,exp) => tot
+            neg = getBudgetNegatives(budget.id,mon).filter(expense => expense.year == years[yindex]).reduce((tot,exp) => tot
             + exp.amount, 0)
+            
             return (
               
               <BudgetCard
@@ -104,6 +179,7 @@ export default function Home() {
           
           <TotalBudgetCard
             monthIndex={totalMonthIndex}
+            yearIndex={totalYearIndex}
             />
         </div>
       </Container>
@@ -121,6 +197,7 @@ export default function Home() {
         
         budgetId={viewExpensesModalBudgetId}
         monthIndex={viewExpensesModalMonthIndex}
+        yearIndex={viewExpensesModalYearIndex}
         handleClose={() => setViewExpensesModalBudgetId()}
       />
       <ViewStatsModal
@@ -131,6 +208,7 @@ export default function Home() {
         
         budgetId={propertyStatsModalBudgetId}
         monthIndex={propertyStatsModalMonthIndex}
+        yearIndex={propertyStatsModalYearIndex}
         handleClose={() => setPropertyStatsModalBudgetId()}
       />
     </>

@@ -20,7 +20,7 @@ export default function BudgetCard({
     }
     
     return( //dflex spaces title and number
-        <Card className={classNames.join(" ")}>
+        <Card className={classNames.join(" ")} border="primary">
             <Card.Body>
                 <Card.Title className="d-flex justify-content-between 
                 align-items-baseline fw-normal mb-3"> 
