@@ -166,6 +166,7 @@ export default function Home() {
               <BudgetCard
               name = {budget.name}
               key = {budget.id}
+              
               amount = {amount} 
               max = {Math.abs(neg)}
               onAddExpenseClick={() => openAddExpenseModal(budget.id)}

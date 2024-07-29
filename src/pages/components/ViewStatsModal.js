@@ -1,22 +1,16 @@
 import {  Modal, Stack } from "react-bootstrap"
-import {  useBudgets, UNCATEGORIZED_BUDGET_ID, } from "../contexts/BudgetsContext"
+import {  useBudgets } from "../contexts/BudgetsContext"
 import BudgetCard from "./BudgetCard"
 
 //ui for adding budget
 //mb = margin bottom
-export default function ViewStatsModal({ handleClose, show,}) {
+export default function ViewStatsModal({ handleClose, show}) {
     const { expenses, budgets} = useBudgets()
-    const { getBudgetExpenses} = useBudgets()
+    
     const amount = expenses.reduce((total, expense ) => total + expense.amount,0) //total spending
-    let bl = 0 //uncat
-    const c = getBudgetExpenses(UNCATEGORIZED_BUDGET_ID).reduce(
-        (total, expense ) => total + expense.amount,
-        0
-    )
-    if (c > 0){
-        bl = 1 
-    } 
-    const max = budgets.reduce((total, budget ) => total + budget.max,0) //total max, max for each month?
+    
+    
+    const max = expenses.filter(expense => expense.amount < 0).reduce((total, expense ) => total + expense.amount,0) //nagetives
     return (
         <Modal show={show} onHide={handleClose}> 
             
@@ -33,11 +27,12 @@ export default function ViewStatsModal({ handleClose, show,}) {
                         amount={amount} //total
                         name = "Total" 
                          
-                        max={max/2} 
+                        max={Math.abs(max)} 
+                        hidestats
                         hideButtons/>
                     <BudgetCard  
                         //check for uncat
-                        amount={amount/(budgets.length + bl)}  // +1 for uncat
+                        amount={amount/budgets.length}  // +1 for uncat
                         name = "Average Amount" 
                         gray 
                         uncat

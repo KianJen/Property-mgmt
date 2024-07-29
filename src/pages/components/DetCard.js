@@ -22,6 +22,14 @@ export default function DetCard({
         classNames.push("bg-light")
     }
     
+    function setmax(){
+        max = 1
+        return(<div></div>)
+    }
+    let truamount = amount
+    if (amount < 0){
+        truamount = max
+    }
     return( //dflex spaces title and number
         <Card className={classNames.join(" ")} bg="dark" border="primary" style={{marginTop: '20px'}}>
             <Card.Body>
@@ -35,15 +43,17 @@ export default function DetCard({
                             / {currencyFormatter.format(max)}
                         </span>
                         )}
+                        {max === 0 && (setmax())}
                     </div>
                 </Card.Title>
-                 
+                   
                     <ProgressBar 
                         className="rounded-pill" 
                         variant={getProgressBarVariant(amount,max)}
                         min = {0}
                         max = {max}
-                        now = {amount}
+                        
+                        now = {truamount}
                     />
                 
                 <Accordion style={{marginTop: '20px'}} defaultActiveKey="0">
@@ -85,5 +95,5 @@ function getProgressBarVariant(amount, max) {
     if (ratio < .5) return "warning"
     if (ratio < .75) return "primary"
     if (ratio > 1) return "success"
-    return "info"
+    return 
 }

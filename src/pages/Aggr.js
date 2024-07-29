@@ -16,7 +16,7 @@ function Aggr(){
     const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
     const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
     const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
-    const { budgets,  getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate, currentYears, currentMonths} = useBudgets() 
+    const { budgets,  getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate, currentYears, currentMonths,currentExpenses} = useBudgets() 
     
     const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
     const currentYearRef = useRef()
@@ -105,6 +105,9 @@ function Aggr(){
                         </Col>
                         )  
                     })}
+                    <Col md={4}>
+                        
+                    </Col>
                 </Row>
                 
             </Container>
