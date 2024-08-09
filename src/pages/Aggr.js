@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react"
 import { useState, useRef } from "react";
-import { Button, Card, Container, Row, Stack, CardBody, CardTitle, Col, Dropdown,DropdownToggle,DropdownItem } from "react-bootstrap";
+import { Button, Card, Container, Row, Stack, CardBody, Col, Dropdown} from "react-bootstrap";
 import {  useBudgets } from './contexts/BudgetsContext';
 import DetCard from './components/DetCard'
 import TotalDetCard from "./components/TotalDetCard";
@@ -10,16 +10,14 @@ function Aggr(){
     document.body.style.backgroundColor = 'black'
     
     const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
-    const [showViewStatsModal, setShowViewStatsModal] = useState(false)
-    const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
-    const [viewExpensesModalMonthIndex, setViewExpensesModalMonthIndex] = useState()
-    const [totalMonthIndex, setTotalMonthIndex] = useState()
-    const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
+    
+    
+    
     const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
     const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
-    const { budgets, Total, getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate, currentYears, currentMonths,currentExpenses} = useBudgets() 
+    const { budgets, Total, getAggExpenses, getAggNegatives,months,years, addMonth, addYear, Aggregate, currentYears, currentMonths} = useBudgets() 
     
-    const [propertyStatsModalMonthIndex,setPropertyStatsModalMonthIndex] = useState()
+    
     const currentYearRef = useRef()
     const currentMonthRef = useRef()
     
@@ -43,12 +41,13 @@ function Aggr(){
                                     </Link>
                                     <Card>
                                         <CardBody>
-                                            {currentYears}
+                                            {currentYears.map(year => year + " ")}
+                                                
                                         </CardBody>
                                     </Card>
                                     <Card>
                                         <CardBody>
-                                            {currentMonths}
+                                            {currentMonths.map(year => year + " ")}
                                         </CardBody>
                                     </Card>
                                     <Button onClick={() => Total()}>

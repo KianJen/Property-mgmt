@@ -1,9 +1,9 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, ButtonGroup, Stack, useAccordionButton } from 'react-bootstrap';
+import { Button, ButtonGroup, Stack } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container'
 import BudgetCard from './components/BudgetCard';
-import { Carousel, CarouselItem, Card, CardBody } from 'react-bootstrap';
+
 //import UncategorizedBudgetCard from './components/UncategorizedBudgetCard';
 import TotalBudgetCard from './components/TotalBudgetCard';
 import ViewExpensesModal from './components/ViewExpensesModal';
@@ -25,8 +25,8 @@ export default function Home() {
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
   const [viewExpensesModalMonthIndex, setViewExpensesModalMonthIndex] = useState()
   const [viewExpensesModalYearIndex, setViewExpenseModalYearIndex] = useState()
-  const [totalMonthIndex, setTotalMonthIndex] = useState()
-  const [totalYearIndex, setTotalYearIndex] = useState()
+  const [totalMonthIndex, setTotalMonthIndex] = useState(0)
+  const [totalYearIndex, setTotalYearIndex] = useState(0)
   const [propertyStatsModalBudgetId, setPropertyStatsModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
   const [addExpenseModalMonthIndex, setAddExpenseModalMonthIndex] = useState()
@@ -46,7 +46,7 @@ export default function Home() {
   const left = "<"
   
   function moveLeft(){
-    if(cindex == 0){
+    if(cindex === 0){
       setcindex(11)
       cindex = 11
     } else {
@@ -60,7 +60,7 @@ export default function Home() {
   }
 
   function moveRight(){
-    if(cindex == 11){
+    if(cindex === 11){
       setcindex(0)
       cindex = 0
     } else {
@@ -74,7 +74,7 @@ export default function Home() {
   }
 
   function ymoveLeft(){
-    if(yindex == 0){
+    if(yindex === 0){
       setyindex(years.length - 1)
       yindex = years.length - 1
     } else {
@@ -88,7 +88,7 @@ export default function Home() {
   }
 
   function ymoveRight(){
-    if(yindex == (years.length - 1)){
+    if(yindex === (years.length - 1)){
       setyindex(0)
       yindex = 0
     } else {
@@ -154,11 +154,11 @@ export default function Home() {
         >
           {budgets.map(budget => {
             
-            let amount = getBudgetExpenses(budget.id,mon).filter(expense => expense.year == years[yindex]).reduce((total,expense) => total
+            let amount = getBudgetExpenses(budget.id,mon).filter(expense => expense.year === years[yindex]).reduce((total,expense) => total
             + expense.amount, 0) 
             
             let neg = 0
-            neg = getBudgetNegatives(budget.id,mon).filter(expense => expense.year == years[yindex]).reduce((tot,exp) => tot
+            neg = getBudgetNegatives(budget.id,mon).filter(expense => expense.year === years[yindex]).reduce((tot,exp) => tot
             + exp.amount, 0)
             
             return (
